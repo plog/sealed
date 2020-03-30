@@ -1,8 +1,18 @@
 <?php
+$a = session_id();
+if(empty($a)) session_start();
+
+// echo "SID: ".SID."<br>session_id(): ".session_id()."<br>COOKIE: ".$_COOKIE["PHPSESSID"];
+
 $url = '';
-$uname = $newstr = filter_var($_GET['u'], FILTER_SANITIZE_STRING);
+$uname = substr(preg_replace("/[^a-zA-Z]/", "", $_GET['u']),0,15);
+echo $uname;
 if($uname != ""){
-  $filename = 'pic_'.$uname. '.jpeg';
+
+  foreach(glob('upload/pic___'.$uname.'___*.jpeg') as $f) {
+    unlink($f);
+  }  
+  $filename = 'pic___'.$uname.'___'.time().'.jpeg';
   $from = $_FILES['webcam']['tmp_name'];
   $to = 'upload/'.$filename;
   if( move_uploaded_file($from,$to) ){
@@ -10,7 +20,6 @@ if($uname != ""){
     echo $url;
    }
 }else{
-  echo 'No nickname';
+  echo 'No nickname: ';
 }
-
 ?>

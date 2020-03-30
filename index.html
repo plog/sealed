@@ -34,18 +34,22 @@
           <div id="my_camera"><img src="img/vt.png" width="100" /></div>
         </div>
         <div class="seven columns">
-          <label for="exampleEmailInput">Nickname:</label>
-          <input type="text" name="myname" id="myname" />
-          <input
-            type="button"
-            value="Snap!"
-            id="snapbtn"
-            onClick="take_snapshot()"
-          />
-          <br />
-          <label for="exampleEmailInput"
-            >Camera <span id="camstat">Off</span></label
-          ><input type="checkbox" id="onoff" onClick="activateW(this)" />
+          <div class="row">
+            <div class="six columns">
+              <label for="exampleEmailInput">1. Camera <span id="camstat">On</span>:</label>
+            </div>
+            <div class="six columns">
+              <input type="checkbox" id="onoff" onClick="activateW(this)" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="six columns"><label for="exampleEmailInput">2. Nickname:</label></div>
+            <div class="six columns"><input type="text" name="myname" id="myname" style="width:120px" /></div>
+          </div>
+          <div class="row">
+            <div class="six columns"><label for="exampleEmailInput">3. Share:</label></div>
+            <div class="six columns"><input type="button" value="Snap!" id="snapbtn" onClick="take_snapshot()"/></div>
+          </div>
         </div>
       </div>
 
@@ -91,10 +95,10 @@
       function activateW(cb) {
         waitCheck();
         if (cb.checked) {
-          Camstat.innerHTML = 'On';
+          Camstat.innerHTML = 'Off';
           config();
         } else {
-          Camstat.innerHTML = 'Off';
+          Camstat.innerHTML = 'On';
           Webcam.reset();
           cam.innerHTML = '<img src="img/vt.png" width=100/>';
           myname.disabled = true;
