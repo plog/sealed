@@ -29,42 +29,42 @@
   <body class="body-font">
     <h1 class="header">Vox Home Alone</h1>
     <div class="container">
-      <div class="row">
-        <div class="five columns">
-          <div id="my_camera"><img src="img/vt.png" width="100" /></div>
-        </div>
-        <div class="seven columns">
-          <div class="row">
-            <div class="six columns">
-              <label for="exampleEmailInput">1. Camera <span id="camstat">On</span>:</label>
-            </div>
-            <div class="six columns">
-              <input type="checkbox" id="onoff" onClick="activateW(this)" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="six columns"><label for="exampleEmailInput">2. Nickname:</label></div>
-            <div class="six columns"><input type="text" name="myname" id="myname" style="width:120px" /></div>
-          </div>
-          <div class="row">
-            <div class="six columns"><label for="exampleEmailInput">3. Share:</label></div>
-            <div class="six columns"><input type="button" value="Snap!" id="snapbtn" onClick="take_snapshot()"/></div>
-          </div>
+      <div id="camera_wrap">
+        <div id="my_camera"><img src="img/vt.png" width="100" /></div>
+        <div id="camera_tools">
+          <label class="switch">
+            <input type="checkbox" id="onoff" onClick="activateW(this)" />
+            <span class="slider round"></span>
+          </label>
+          <input
+            type="text"
+            name="myname"
+            id="myname"
+            style="width:100px;height:35px"
+            placeholder="Nickname"
+          />
+          <input
+            type="button"
+            value="Snap!"
+            id="snapbtn"
+            onClick="take_snapshot()"
+          />
         </div>
       </div>
-
-      <div id="results" style="margin-top:30px"></div>
     </div>
+
+    <div id="results" style="margin-top:30px"></div>
 
     <!-- <script src="js/sw.js" type="text/javascript"></script> -->
     <!-- Configure a few settings and attach camera -->
     <script language="JavaScript">
+      //https://makitweb.com/how-to-capture-picture-from-webcam-with-webcam-js/
+      //http://getskeleton.com
       var shutter = new Audio();
       var Camstat = document.getElementById('camstat');
       var cam = document.getElementById('my_camera');
       var myname = document.getElementById('myname');
       var snap = document.getElementById('snapbtn');
-      var onoff = document.getElementById('onoff');
       var xhr = new XMLHttpRequest();
 
       function waitCheck() {
@@ -82,9 +82,13 @@
         Webcam.set({
           width: 160,
           height: 120,
+          dest_width: 640,
+          dest_height: 480,
           image_format: 'jpeg',
-          jpeg_quality: 30,
-          flip_horiz: true
+          jpeg_quality: 35,
+          force_flash: false,
+          flip_horiz: true,
+          fps: 25
         });
         Webcam.attach('#my_camera');
         shutter.autoplay = false;
@@ -95,10 +99,8 @@
       function activateW(cb) {
         waitCheck();
         if (cb.checked) {
-          Camstat.innerHTML = 'Off';
           config();
         } else {
-          Camstat.innerHTML = 'On';
           Webcam.reset();
           cam.innerHTML = '<img src="img/vt.png" width=100/>';
           myname.disabled = true;
@@ -138,10 +140,17 @@
         // Webcam.reset();
       }
 
+      function loopload() {
+        get_all();
+        setTimeout(function() {
+          loopload();
+        }, 2000);
+      }
       document.addEventListener('DOMContentLoaded', function() {
         get_all();
         myname.disabled = true;
         snap.disabled = true;
+        loopload;
       });
     </script>
   </body>
